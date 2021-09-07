@@ -34,8 +34,8 @@ class _MainState extends State<Main> {
   @override
   void initState() {
     super.initState();
-    fetchData().then((airResult) {
-      _result = airResult;
+    fetchData().then((result) {
+      _result = result;
     });
   }
 
@@ -60,10 +60,10 @@ class _MainState extends State<Main> {
                         Text('얼굴사진'),
                         Text("${_result.data!.current!.pollution!.aqius}",
                             style: TextStyle(fontSize: 40)),
-                        Text('보통', style: TextStyle(fontSize: 20)),
+                        getText(_result),
                       ],
                     ),
-                    color: Colors.yellow,
+                    color: getColor(_result),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -91,5 +91,29 @@ class _MainState extends State<Main> {
         )),
       ),
     );
+  }
+
+  Color getColor(AirResult result) {
+    if (result.data!.current!.pollution!.aqius! <= 50) {
+      return Colors.green;
+    } else if (result.data!.current!.pollution!.aqius! <= 100) {
+      return Colors.yellow;
+    } else if (result.data!.current!.pollution!.aqius! <= 150) {
+      return Colors.orange;
+    } else {
+      return Colors.red;
+    }
+  }
+
+  Text getText(AirResult result) {
+    if (result.data!.current!.pollution!.aqius! <= 50) {
+      return Text('좋음', style: TextStyle(fontSize: 16));
+    } else if (result.data!.current!.pollution!.aqius! <= 100) {
+      return Text('보통', style: TextStyle(fontSize: 16));
+    } else if (result.data!.current!.pollution!.aqius! <= 150) {
+      return Text('나쁨', style: TextStyle(fontSize: 16));
+    } else {
+      return Text('최악', style: TextStyle(fontSize: 16));
+    }
   }
 }
